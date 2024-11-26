@@ -1,67 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Facebook Login JavaScript Example</title>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login Example</title>
 </head>
 <body>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0&appId=1126583975554582&autoLogAppEvents=1"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId=1126583975554582&autoLogAppEvents=1"></script>
     <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1126583975554582',
+                cookie: true,
+                xfbml: true,
+                version: 'v14.0'
+            });
 
-function statusChangeCallback(response) {
-    console.log('statusChangeCallback called with response:', response);
-    if (response.status === 'connected') {
-        console.log('User is logged in and authenticated.');
-        testAPI();
-    } else if (response.status === 'not_authorized') {
-        console.log('User is logged into Facebook but not authenticated with the app.');
-        document.getElementById('status').innerHTML = 'Please log in to this app.';
-    } else {
-        console.log('User is not logged into Facebook.');
-        document.getElementById('status').innerHTML = 'Please log into this webpage.';
-    }
-}
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        };
 
+        function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
 
-    function checkLoginState() {               // Called when a person is finished with the Login Button.
-        FB.getLoginStatus(function(response) {   // See the onlogin handler
-            statusChangeCallback(response);
-        });
-    }
+            if (response.status === 'connected') {
+                console.log('Logged in and authenticated');
+                testAPI();
+            } else if (response.status === 'not_authorized') {
+                console.log('Not authorized');
+                document.getElementById('status').innerHTML = 'Please log in to this app.';
+            } else {
+                console.log('Not logged in');
+                document.getElementById('status').innerHTML = 'Please log into this webpage.';
+            }
+        }
 
+        function testAPI() {
+            console.log('Welcome! Fetching your information.... ');
+            FB.api('/me', function(response) {
+                console.log('Successful login for: ' + response.name);
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!';
+            }, {scope: 'email'});
+        }
+    </script>
 
-    window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1126583975554582', // Place your APP ID here
-          cookie     : true,                     // Enable cookies to allow the server to access the session.
-          xfbml      : true,                     // Parse social plugins on this webpage.
-          version    : 'v10.0'           // Use this Graph API version for this call.
-    });
-
-
-        FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-            statusChangeCallback(response);        // Returns the login status.
-        });
-    };
-
-    function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-        console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
-            console.log('Successful login for: ' + response.name);
-            document.getElementById('status').innerHTML =
-                'Thanks for logging in, ' + response.name + '!';
-        });
-    }
-
-</script>
-
-
-<!-- The JS SDK Login Button -->
-<div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"></div> 
-
-
-<div id="status">
-</div>
+    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="true"></div>
+    <div id="status">
+    </div>
 </body>
 </html>
