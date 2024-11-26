@@ -7,21 +7,43 @@
 </head>
 <body>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0&appId=1126583975554582&autoLogAppEvents=1"></script>
+    
+    <!-- Facebook SDK Script -->
     <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId: '1126583975554582',
-                cookie: true,
-                xfbml: true,
-                version: 'v14.0'
-            });
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : 'YOUR_APP_ID',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v14.0'
+        });
+          
+        FB.AppEvents.logPageView();   
+          
+        // Check login status when page loads
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+      };
 
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
-        };
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
 
+    <!-- Facebook login button -->
+    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="true"></div>
+    
+    <!-- Status display -->
+    <div id="status">
+    </div>
+
+    <!-- JavaScript functions -->
+    <script>
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
             console.log(response);
@@ -48,8 +70,5 @@
         }
     </script>
 
-    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="true"></div>
-    <div id="status">
-    </div>
 </body>
 </html>
