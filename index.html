@@ -7,35 +7,9 @@
 </head>
 <body>
     <div id="fb-root"></div>
-    
-    <!-- Facebook SDK Script -->
-    <script>
-      window.fbAsyncInit = function() {
-        console.log("Initializing Facebook SDK");
-        FB.init({
-          appId      : '1126583975554582',
-          cookie     : true,
-          xfbml      : true,
-          version    : 'v14.0'
-        });
-          
-        FB.AppEvents.logPageView();   
-          
-        // Check login status when page loads
-        FB.getLoginStatus(function(response) {
-            console.log('FB.getLoginStatus:', JSON.stringify(response));
-            statusChangeCallback(response);
-        });
-      };
 
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
+    <!-- Facebook SDK Script -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
     <!-- Facebook Login Button -->
     <fb:login-button 
@@ -49,6 +23,17 @@
 
     <!-- JavaScript functions -->
     <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '1126583975554582',
+              cookie     : true,
+              xfbml      : true,
+              version    : 'v14.0'
+            });
+            
+            FB.AppEvents.logPageView();
+        };
+
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
             console.log('Response:', JSON.stringify(response));
@@ -91,6 +76,5 @@
             }
         }
     </script>
-
 </body>
 </html>
