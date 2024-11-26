@@ -35,8 +35,11 @@
        }(document, 'script', 'facebook-jssdk'));
     </script>
 
-    <!-- Facebook login button -->
-    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="true"></div>
+    <!-- Facebook Login Button -->
+    <fb:login-button 
+      scope="public_profile,email"
+      onlogin="checkLoginState();">
+    </fb:login-button>
     
     <!-- Status display -->
     <div id="status">
@@ -54,19 +57,33 @@
             } else if (response.status === 'not_authorized') {
                 console.log('Not authorized');
                 document.getElementById('status').innerHTML = 'Please log in to this app.';
+            } else if (response.status === 'unknown') {
+                console.log('Unknown status');
+                document.getElementById('status').innerHTML = 'Please try logging in again.';
             } else {
                 console.log('Not logged in');
                 document.getElementById('status').innerHTML = 'Please log into this webpage.';
             }
         }
 
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
+
         function testAPI() {
-            console.log('Welcome! Fetching your information.... ');
-            FB.api('/me', function(response) {
-                console.log('Successful login for: ' + response.name);
-                document.getElementById('status').innerHTML =
-                    'Thanks for logging in, ' + response.name + '!';
-            }, {scope: 'email'});
+            try {
+                console.log('Welcome! Fetching your information.... ');
+                FB.api('/me', function(response) {
+                    console.log('Successful login for: ' + response.name);
+                    document.getElementById('status').innerHTML =
+                        'Thanks for logging in, ' + response.name + '!';
+                }, {scope: 'email'});
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+                document.getElementById('status').innerHTML = 'An error occurred while fetching your information.';
+            }
         }
     </script>
 
