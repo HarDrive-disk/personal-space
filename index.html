@@ -5,14 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Login Example</title>
     
-    <!-- Add this meta tag before any script tags -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' http://localhost:3103 wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://*.google-analytics.com">
-</head>
+    <!-- CSP Meta Tag -->
+    <script>
+    (function() {
+        var meta = document.createElement('meta');
+        meta.httpEquiv = "Content-Security-Policy";
+        meta.content = "default-src 'self'; script-src 'self' https://connect.facebook.net; connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' http://localhost:3103 wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://*.google-analytics.com; style-src 'self' 'unsafe-inline';";
+        document.head.appendChild(meta);
+
+        var script = document.createElement('script');
+        script.src = 'https://connect.facebook.net/en_US/sdk.js';
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    })();
+    </script>
+    </head>
 <body>
     <div id="fb-root"></div>
-
-    <!-- Facebook SDK Script -->
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
     <!-- Facebook Login Button -->
     <fb:login-button 
